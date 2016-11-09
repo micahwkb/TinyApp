@@ -14,7 +14,17 @@ const PORT = process.env.PORT || 8080;
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
-  };
+};
+
+function generateRandomString() {
+  let randomString = "";
+  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for( var i=0; i < 6; i++ ) {
+    randomString += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return randomString;
+};
+
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -22,8 +32,8 @@ app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
 });
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase };
-  res.render("urls_index", templateVars);
+  let urlVars = { urls: urlDatabase };
+  res.render("urls_index", urlVars);
 });
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
@@ -31,14 +41,19 @@ app.get("/urls/new", (req, res) => {
 // below would catch /new if not placed below
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id };
+  let templateVars = {
+    shortURL: req.params.id,
+    longURL: urlDatabase[req.params.id]
+  };
   res.render("urls_show", templateVars);
+  console.log(`\n\n`, req.params.id, `\n\n`)
 });
 
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
+
 app.post("/urls", (req, res) => {
   console.log(req.body); // log POST parameters for debugging
   res.send("OK"); // (to be changed later)

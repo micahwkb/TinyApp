@@ -8,13 +8,11 @@
       <% include partials/_header %>
     </header>
     <div>
-      <% for (key in showURL) { %>
           <tr>
-            <td><%= `localhost:8080/u/${key}` %></td>
+            <td><%= `localhost:8080/u/${shortURL}` %></td>
             <td> ➛ </td>
-            <td><%= `${showURL[key]}` %></td>
+            <td><%= `${longURL}` %></td>
           </tr>
-        <% }; %>
     </div>
   </body>
 </html>
