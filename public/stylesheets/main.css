@@ -1,9 +1,8 @@
-html, body {
-    height: 100%;
-}
 body {
+  margin: auto;
   font-size:24px;
   padding:50px;
+  background-color: #CAE1FF;
   background: no-repeat center/100% url("../shrunk.jpg");
 }
 
