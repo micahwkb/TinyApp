@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>TinyApp</title>
-</head>
-<body>
- <header>
-    <% include partials/_header %>
-  </header>
-</body>
+  <head>
+    <title>TinyApp</title>
+  </head>
+  <body>
+    <header>
+      <% include partials/_header %>
+    </header>
+    <div>
+      <a style="font-size: 1.3em" href="/urls/new">Click here to make a short URL!</a>
+    </div>
+    <div>
+      <h3>Look how short we made all these URLS!</h3>
+      <table>
+        <% for (key in urls) { %>
+          <tr>
+            <td><a href="<%= `/u/${key}` %>"><%= `localhost:8080/u/${key}` %></a></td>
+            <td> ➛ </td>
+            <td><a href="<%= `${urls[key]}` %>"><%= `${urls[key]}` %></a></td>
+          </tr>
+        <% }; %>
+      </table>
+    </div>
+
+  </body>
 </html>
+<!-- A list or table of the URLs and their shortened forms.
+ -->

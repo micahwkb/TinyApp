@@ -30,19 +30,19 @@ app.get("/urls/new", (req, res) => {
 });
 // below would catch /new if not placed below
 
-// app.get("/urls/:id", (req, res) => {
-//   let templateVars = { shortURL: req.params };
-//   console.log(templateVars)
-// });
+app.get("/urls/:id", (req, res) => {
+  let templateVars = { shortURL: req.params.id };
+  res.render("urls_show", templateVars);
+});
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL]
-  res.redirect(longURL)
-})
+  let longURL = urlDatabase[req.params.shortURL];
+  res.redirect(longURL);
+});
 app.post("/urls", (req, res) => {
   console.log(req.body); // log POST parameters for debugging
   res.send("OK"); // (to be changed later)
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

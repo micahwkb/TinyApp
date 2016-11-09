@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>TinyApp</title>
-</head>
-<body>
-  <header>
-    <% include partials/_header %>
-  </header>
-</body>
+  <head>
+    <title>TinyApp</title>
+  </head>
+  <body>
+    <header>
+      <% include partials/_header %>
+    </header>
+    <div>
+      <% for (key in showURL) { %>
+          <tr>
+            <td><%= `localhost:8080/u/${key}` %></td>
+            <td> ➛ </td>
+            <td><%= `${showURL[key]}` %></td>
+          </tr>
+        <% }; %>
+    </div>
+  </body>
 </html>
