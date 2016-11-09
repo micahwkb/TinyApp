@@ -1,6 +1,7 @@
 "use strict";
 
 const express = require("express");
+const randomize = require('randomatic');
 
 const app = express();
 app.set("view engine", "ejs");
@@ -17,20 +18,30 @@ const urlDatabase = {
 };
 
 function generateRandomString() {
+  return randomize("Aa0", 6);
+};
+
+/*function generateRandomString() {
   let randomString = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for( let i=0; i < 6; i++ ) {
     randomString += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return randomString;
-}
+}*/
 
+// - REDIRECTS - //
 app.get("/", (req, res) => {
   res.redirect("/urls");
 });
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
 });
+app.get("/new", (req, res) => {
+  res.redirect("/urls/new");
+});
+
+// - RENDERS - //
 app.get("/urls", (req, res) => {
   let urlVars = { urls: urlDatabase };
   res.render("urls_index", urlVars);
@@ -38,8 +49,6 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
-// below would catch /new if not placed below
-
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
@@ -58,6 +67,7 @@ app.get("/u/:shortURL", (req, res) => {
   }
 });
 
+// - POSTS - //
 app.post("/urls", (req, res) => {
   let longURL = req.body.longURL;
   // if longURL doesn't preface with http:// or https://
@@ -67,6 +77,7 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${randomStr}`);
 });
 
+// - SERVER LISTENER - //
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
