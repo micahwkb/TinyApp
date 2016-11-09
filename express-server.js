@@ -5,8 +5,9 @@ const randomize = require("randomatic");
 
 const app = express();
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
 
+// - Engine inits - //
+app.use(bodyParser.urlencoded({extended: true}));
 app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
 
@@ -22,15 +23,6 @@ const urlDatabase = {
 function generateRandomString() {
   return randomize("Aa0", 6);
 }
-
-/*function generateRandomString() {
-  let randomString = "";
-  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for( let i=0; i < 6; i++ ) {
-    randomString += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return randomString;
-}*/
 
 // - REDIRECTS - //
 app.get("/", (req, res) => {
@@ -69,7 +61,6 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 // - POSTS - //
-
 app.post("/urls", (req, res) => {
   let longURL = req.body.longURL;
   // if longURL doesn't preface with http:// or https://
@@ -83,8 +74,9 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls")
 });
 app.post("/urls/:id", (req, res) => {
-  urlDatabase[req.params.id] = req.body.longURL;
-  res.redirect("/urls")
+  let id = req.params.id;
+  urlDatabase[id] = req.body.longURL;
+  res.redirect(`/urls/${id}`)
 });
 
 // - SERVER LISTENER - //

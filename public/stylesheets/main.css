@@ -1,19 +1,65 @@
+html, body {
+    height: 100%;
+}
 body {
-  font-size:20px;
+  font-size:24px;
   padding:50px;
   background: no-repeat center/100% url("../shrunk.jpg");
 }
 
-h1 {
+h1, h3 {
+  font-family: Arial;
   color: white;
-  text-shadow: 2px 1px 5px black;
+  text-shadow: 2px 2px 5px black;
 }
 
+a:visited, a:link, a:active h1, h3
+{
+  text-decoration: none;
+}
+a:hover h1 {
+  text-shadow: 4px 4px 10px black;
+}
+a:hover h3 {
+  text-shadow: 4px 4px 10px black;
+}
+
+a:visited.links-nodec  {
+  text-decoration: none;
+  color: blue;
+}
 button {
-  padding: 4px;
+  height: 32px;
+  line-height: 32px;
+  font-size: .9em;
+  border: 1px solid gray;
   border-radius: 5px;
   background-color: white;
-  font-size: 0.8em;
-  border: 1px solid gray;
-  box-shadow: 2px 1px 1px gray;
+}
+
+input {
+  width: 50%;
+  height: 30px;
+  font-size: 1.1em;
+}
+button:hover {
+    box-shadow: 1px 1px 1px gray;
+    color: white;
+    text-shadow: 1px 1px 1px gray;
+}
+
+.btnbig {
+  height: 40px;
+  line-height: 40px;
+}
+.btnbig:hover{
+  background-color: #00BFFF;
+}
+.btncaution:hover {
+  background-color: orangered;
+
+}
+
+.btnsafe:hover {
+  background-color: #7CCD7C;
 }

@@ -4,14 +4,17 @@
     <% include partials/_head %>
   </head>
   <body>
-    <% include partials/_h1 %>
+    <a href="/"><% include partials/_h1 %></a>
     <div>
-      <h2>Short URL:
-        <a href="http://localhost:8080/u/<%= shortURL %>"> http://localhost:8080/u/<%= shortURL %></a>
+      <h2>Shrunken! →
+        <a class="links-nodec" href="http://localhost:8080/u/<%= shortURL %>"> http://localhost:8080/u/<%= shortURL %></a>
       </h2>
+      <h4>Full URL: <%= longURL %></h4>
       <div>
         <form method="POST" action="/urls/<%= `${shortURL}` %>">
-        <input autocomplete="off" id="longURL" type="text" name="longURL" style="width: 300px" value="<%= `${longURL}` %>"><button type="submit">🔗 Update Link</button></form>
+          <input autofocus="autofocus" autocomplete="off" id="longURL" type="text" name="longURL" value="<%= `${longURL}` %>">
+          <button class="btnsafe" type="submit">🔗 Update Link</button>
+        </form>
       </div>
     </div>
   </body>
