@@ -4,12 +4,11 @@ const express = require("express");
 const randomize = require("randomatic");
 
 const app = express();
-app.set("view engine", "ejs");
-
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/public", express.static("public"));
+app.set("view engine", "ejs");
 
 const PORT = process.env.PORT || 8080;
 
