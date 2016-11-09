@@ -9,9 +9,9 @@
     </header>
     <div>
           <tr>
-            <td><%= `localhost:8080/u/${shortURL}` %></td>
+            <td><a href="<%= `/u/${shortURL}` %>"><%= `localhost:8080/u/${shortURL}` %></a></td>
             <td> ➛ </td>
-            <td><%= `${longURL}` %></td>
+            <td><a href="<%= `${longURL}` %>"><%= `${longURL}` %></a></td>
           </tr>
     </div>
   </body>

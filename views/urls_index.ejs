@@ -7,11 +7,14 @@
     <header>
       <% include partials/_header %>
     </header>
+
+    <h1>Honey, I shrunk the URL</h1>
+
     <div>
-      <a style="font-size: 1.3em" href="/urls/new">Click here to make a short URL!</a>
+      <a style="font-size: 1.3em" href="/urls/new">Click here to make a short URL</a>
     </div>
     <div>
-      <h3>Look how short we made all these URLS!</h3>
+      <h4>Have a look at some URLs we already shortened:</h4>
       <table>
         <% for (key in urls) { %>
           <tr>
@@ -25,5 +28,3 @@
 
   </body>
 </html>
-<!-- A list or table of the URLs and their shortened forms.
- -->

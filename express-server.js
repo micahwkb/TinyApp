@@ -19,14 +19,14 @@ const urlDatabase = {
 function generateRandomString() {
   let randomString = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for( var i=0; i < 6; i++ ) {
+  for( let i=0; i < 6; i++ ) {
     randomString += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return randomString;
 }
 
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  res.redirect("/urls");
 });
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
@@ -49,13 +49,21 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
+  let shortURL = req.params.shortURL;
+  let dbEntry = urlDatabase[shortURL];
+  if (urlDatabase[shortURL] !== undefined) {
+    res.redirect(dbEntry);
+  } else {
+    res.redirect("/urls");
+  }
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body); // log POST parameters for debugging
-  res.send("OK"); // (to be changed later)
+  let longURL = req.body.longURL;
+  let randomStr = generateRandomString();
+  let shortURL = `localhost:8080/u/${randomStr}`
+  urlDatabase[randomStr] = longURL;
+  res.redirect(`/urls/${randomStr}`);
 });
 
 app.listen(PORT, () => {
