@@ -23,7 +23,7 @@ function generateRandomString() {
     randomString += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return randomString;
-};
+}
 
 app.get("/", (req, res) => {
   res.end("Hello!");
@@ -46,7 +46,6 @@ app.get("/urls/:id", (req, res) => {
     longURL: urlDatabase[req.params.id]
   };
   res.render("urls_show", templateVars);
-  console.log(`\n\n`, req.params.id, `\n\n`)
 });
 
 app.get("/u/:shortURL", (req, res) => {
