@@ -1,13 +1,15 @@
 "use strict";
 
 const express = require("express");
-const randomize = require('randomatic');
+const randomize = require("randomatic");
 
 const app = express();
 app.set("view engine", "ejs");
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use("/public", express.static("public"));
 
 const PORT = process.env.PORT || 8080;
 
@@ -17,9 +19,10 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// - FUNCTIONS - //
 function generateRandomString() {
   return randomize("Aa0", 6);
-};
+}
 
 /*function generateRandomString() {
   let randomString = "";
@@ -56,7 +59,6 @@ app.get("/urls/:id", (req, res) => {
   };
   res.render("urls_show", templateVars);
 });
-
 app.get("/u/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
   let dbEntry = urlDatabase[shortURL];
@@ -68,6 +70,7 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 // - POSTS - //
+
 app.post("/urls", (req, res) => {
   let longURL = req.body.longURL;
   // if longURL doesn't preface with http:// or https://
@@ -75,6 +78,14 @@ app.post("/urls", (req, res) => {
   let randomStr = generateRandomString();
   urlDatabase[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
+});
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL];
+  res.redirect("/urls")
+});
+app.post("/urls/:id", (req, res) => {
+  urlDatabase[req.params.id] = req.body.longURL;
+  res.redirect("/urls")
 });
 
 // - SERVER LISTENER - //

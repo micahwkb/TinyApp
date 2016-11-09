@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TinyApp</title>
+    <% include partials/_header %>
   </head>
   <body>
-    <header>
-      <% include partials/_header %>
-    </header>
+    <% include partials/_h1 %>
     <div>
-          <tr>
-            <td><a href="<%= `/u/${shortURL}` %>"><%= `localhost:8080/u/${shortURL}` %></a></td>
-            <td> ➛ </td>
-            <td><a href="<%= `${longURL}` %>"><%= `${longURL}` %></a></td>
-          </tr>
+      <h1>Short URL:
+        <a href="http://localhost:8080/u/<%= shortURL %>"> http://localhost:8080/u/<%= shortURL %></a>
+      </h1>
+      <div>
+        <form method="POST" action="/urls/<%= `${shortURL}` %>">
+        <input autocomplete="off" id="longURL" type="text" name="longURL" style="width: 300px" value="<%= `${longURL}` %>"><button type="submit">🔗 Update Link</button></form>
+      </div>
     </div>
   </body>
 </html>

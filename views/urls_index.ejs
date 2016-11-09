@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TinyApp</title>
+    <% include partials/_header %>
   </head>
   <body>
-    <header>
-      <% include partials/_header %>
-    </header>
-
-    <h1>Honey, I shrunk the URL</h1>
-
     <div>
-      <a style="font-size: 1.3em" href="/urls/new">Click here to make a short URL</a>
-    </div>
-    <div>
-      <h4>Have a look at some URLs we already shortened:</h4>
-      <table>
-        <% for (key in urls) { %>
-          <tr>
-            <td><a href="<%= `/u/${key}` %>"><%= `localhost:8080/u/${key}` %></a></td>
-            <td> ➛ </td>
-            <td><a href="<%= `${urls[key]}` %>"><%= `${urls[key]}` %></a></td>
-          </tr>
-        <% }; %>
-      </table>
+      <% include partials/_h1 %>
+      <div>
+        <a style="font-size: 1.3em" href="/urls/new">Click here to make a short URL</a>
+      </div>
+      <div>
+        <h4><em>Have a look at some URLs we already shortened:</em></h4>
+        <table style="width: 60%">
+          <% for (key in urls) { %>
+              <tr>
+                <td><%= `${key}` %></td>
+                <td> → </td>
+                <td><a href="<%= `${urls[key]}` %>"><%= `${urls[key]}` %></a></td>
+                <td><form method="POST" action="/urls/<%= key %>/delete"><button type="submit">🗑 Delete</button></form></td>
+              </tr>
+          <% }; %>
+        </table>
+      </div>
     </div>
 
   </body>
