@@ -60,8 +60,9 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.post("/urls", (req, res) => {
   let longURL = req.body.longURL;
+  // if longURL doesn't preface with http:// or https://
+  // longURL = `http://${longURL}`
   let randomStr = generateRandomString();
-  let shortURL = `localhost:8080/u/${randomStr}`
   urlDatabase[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
 });
