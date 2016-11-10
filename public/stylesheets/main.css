@@ -42,12 +42,7 @@ button, .shrinklink {
   border: 1px solid gray;
   background-color: white;
 }
-button:hover, .shrinklink:hover {
-  border: 1px solid white;
-  box-shadow: 1px 1px 1px gray;
-  color: white;
-  text-shadow: 1px 1px 1px gray;
-}
+
 .internal-link {
   color: black;
 }
@@ -64,6 +59,9 @@ button:hover, .shrinklink:hover {
 .masterlist table {
   margin: auto;
   font-size: .9em;
+}
+.auth-main {
+  margin: auto;
 }
 .shrinklink {
   margin: auto;
@@ -83,6 +81,12 @@ button:hover, .shrinklink:hover {
   height: 40px;
   line-height: 40px;
 }
+button:hover, .shrinklink:hover {
+  border: 1px solid white;
+  box-shadow: 1px 1px 1px gray;
+  color: white;
+  text-shadow: 1px 1px 1px gray;
+}
 .btncaution:hover, .btnsafe:hover {
     border: 1px solid white;
 }
@@ -92,7 +96,7 @@ button:hover, .shrinklink:hover {
 .btnsafe:hover {
   background-color: #7CCD7C;
 }
-.btnlogin:hover {
+.btnauth:hover {
   background-color: #8470FF;
 }
 .left-force {
