@@ -2,6 +2,7 @@ body {
   margin: auto;
   font-size:20px;
   background: no-repeat center/100% url("../shrunk.jpg");
+  font-family: Helvetica;
 }
 
 h1 {
@@ -93,15 +94,12 @@ button:hover, .shrinklink:hover {
 .btnsafe:hover {
   background-color: #7CCD7C;
 }
-.btnauth:hover {
-  background-color: #8470FF;
-}
 .left-force {
   text-align: left;
 }
 .btnregister {
   float: right;
 }
-.btnregister:hover {
+.btnregister:hover, .btnauth:hover {
   background-color: #1E90FF;
 }
