@@ -1,18 +1,16 @@
 body {
   margin: auto;
-  font-size:24px;
-  padding:50px;
-  background-color: #CAE1FF;
+  font-size:20px;
   background: no-repeat center/100% url("../shrunk.jpg");
 }
 
-h1, h3 {
+h1 {
   font-family: Arial;
   color: white;
   text-shadow: 2px 2px 5px black;
+  line-height: .5em;
 }
-
-a:visited, a:link, a:active h1, h3
+a:visited, a:link, a:active h1, h3, .internal-link
 {
   text-decoration: none;
 }
@@ -22,43 +20,72 @@ a:hover h1 {
 a:hover h3 {
   text-shadow: 4px 4px 10px black;
 }
-
 a:visited.links-nodec  {
   text-decoration: none;
   color: blue;
 }
-button {
-  height: 32px;
-  line-height: 32px;
-  font-size: .9em;
-  border: 1px solid gray;
-  border-radius: 5px;
-  background-color: white;
-}
 
-input {
-  width: 50%;
+button {
   height: 30px;
+  line-height: 30px;
+  font-size: .9em;
+  border-radius: 5px;
+}
+input {
+  display:inline-block;
+  height: 32px;
   font-size: 1.1em;
 }
-button:hover {
-    box-shadow: 1px 1px 1px gray;
-    color: white;
-    text-shadow: 1px 1px 1px gray;
+button:hover, .shrinklink:hover {
+  box-shadow: 1px 1px 1px gray;
+  color: white;
+  text-shadow: 1px 1px 1px gray;
 }
-
+button, .shrinklink {
+  border: 1px solid gray;
+  background-color: white;
+}
+.internal-link {
+  color: black;
+}
+.internal-link:hover {
+  color: #404040;
+}
+.text-field {
+  display: inline-block;
+  width: 70%;
+}
+.masterlist, .shrinklink, .formtemplate {
+  text-align: center;
+}
+.masterlist table {
+  margin: auto;
+  font-size: .9em;
+}
+.shrinklink {
+  margin: auto;
+  width: 45%;
+  border-radius: 20px;
+  padding: 5px;
+  color: black;
+  font-size: 1.3em;
+  background-color: white;
+  border-radius: 5px;
+}
+.shrinklink:hover {
+  background-color: #00BFFF;
+  color: white;
+}
 .btnbig {
   height: 40px;
   line-height: 40px;
 }
-.btnbig:hover{
-  background-color: #00BFFF;
-}
 .btncaution:hover {
   background-color: orangered;
-
 }
-
 .btnsafe:hover {
   background-color: #7CCD7C;
+}
+.left-force {
+  text-align: left;
 }

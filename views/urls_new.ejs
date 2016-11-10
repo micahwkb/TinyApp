@@ -5,12 +5,14 @@
   </head>
   <body>
     <a href="/"><% include partials/_h1 %></a>
-    <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">
-        <h4>Enter a URL:</h4>
-        <input autocomplete="off" id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-        <button class="btnsafe" type="submit">⚙ Submit</button>
-      </label>
-    </form>
+    <div class = "formtemplate">
+      <form action="/urls" method="POST" style="margin:auto;">
+        <label for="longURL">
+          <h4>Enter a URL:</h4>
+          <input class="text-field" autofocus="autofocus" autocomplete="off" id="longURL" type="text" name="longURL" placeholder="http://">
+          <button class="btnsafe btnbig" type="submit">Submit</button>
+        </label>
+      </form>
+    </div>
   </body>
 </html>

@@ -6,19 +6,21 @@
   <body>
     <div>
       <% include partials/_h1 %>
-      <div>
-        <a style="font-size: 1.3em" href="/urls/new"><button class="btnbig" type="submit">Click here shrink a URL</button></a>
-      </div>
-      <div>
-        <h4><em>Have a look at some URLs we already shortened:</em></h4>
+      <a href="/urls/new">
+        <div class="shrinklink">
+        Click here shrink a URL
+        </div>
+      </a>
+      <div class="masterlist">
+        <h3><em>Have a look at some URLs we already shortened:</em></h3>
         <table>
           <% for (key in urls) { %>
               <tr>
-                <td><strong><%= `${key}` %></td>
-                <td> → </td>
-                <td><a href="<%= `${urls[key]}` %>"><%= `${urls[key]}` %></a></td>
-                <td><form method="GET" action="/urls/<%= key %>"><button class="btnsafe" type="submit">⚙ Modify</button></form></td>
-                <td><form method="POST" action="/urls/<%= key %>/delete"><button class="btncaution" type="submit">🗑 Delete</button></form></td>
+                <td><a class="internal-link" href="/u/<%= `${key}` %>"><strong>localhost:8080/u/<%= `${key}` %></strong></a></td>
+                <td>→</td>
+                <td class="left-force"><a href="<%= `${urls[key]}` %>"><%= `${urls[key]}` %></a></td>
+                <td><form method="GET" action="/urls/<%= key %>"><button class="btnsafe" type="submit">⚙</button></form></td>
+                <td><form method="POST" action="/urls/<%= key %>/delete"><button class="btncaution" type="submit">🗑</button></form></td>
               </tr>
           <% }; %>
         </table>

@@ -5,15 +5,15 @@
   </head>
   <body>
     <a href="/"><% include partials/_h1 %></a>
-    <div>
+    <div class="formtemplate">
       <h2>Shrunken! →
         <a class="links-nodec" href="http://localhost:8080/u/<%= shortURL %>"> http://localhost:8080/u/<%= shortURL %></a>
       </h2>
       <h4>Full URL: <%= longURL %></h4>
       <div>
         <form method="POST" action="/urls/<%= `${shortURL}` %>">
-          <input autofocus="autofocus" autocomplete="off" id="longURL" type="text" name="longURL" value="<%= `${longURL}` %>">
-          <button class="btnsafe" type="submit">🔗 Update Link</button>
+          <input class="text-field" autofocus="autofocus" autocomplete="off" id="longURL" type="text" name="longURL" value="<%= `${longURL}` %>">
+          <button class="btnsafe btnbig" type="submit">🔗 Update Link</button>
         </form>
       </div>
     </div>
