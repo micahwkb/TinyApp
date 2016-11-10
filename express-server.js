@@ -16,7 +16,13 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-const users = {};
+const users = {
+   1: {
+    id: 1,
+    email: "test@test.com",
+    password: "password"
+  }
+};
 
 // - Engine inits - //
 app.use(cookieParser());
@@ -27,9 +33,20 @@ app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
 
 // - FUNCTIONS - //
-function generateRandomString() {
+const generateRandomString = () => {
   return randomize("Aa0", 6);
-}
+};
+
+const doesEmailExist = (email, object) => {
+  let found = [];
+  _.forEach(object, function(userId) {
+    if (userId.email === email) {
+      console.log(userId.email, "is ")
+      found.push(userId.email);
+    }
+  })
+  return (found.length > 0);
+};
 
 // - GET REDIRECTS - //
 app.get("/", (req, res) => {
@@ -119,11 +136,11 @@ app.post("/logout", (req, res) => {
 });
 app.post("/register", (req, res) => {
   let password = req.body.password;
-  let username = req.body.email;
+  let email = req.body.email;
   let id = generateRandomString();
   users[id] = {
     id: id,
-    username: email,
+    email: email,
     password: password
   };
   res.redirect("/");
