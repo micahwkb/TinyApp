@@ -2,22 +2,22 @@
 
 const express = require("express");
 const randomize = require("randomatic");
-
 const app = express();
 const bodyParser = require("body-parser");
-
-// - Engine inits - //
-app.use(bodyParser.urlencoded({extended: true}));
-app.use("/public", express.static("public"));
-app.set("view engine", "ejs");
-
+const bcrypt = require("bcrypt");
 const PORT = process.env.PORT || 8080;
-
-
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+// - Engine inits - //
+app.use(bodyParser.urlencoded({extended: true}));
+app.use("/public", express.static("public"));
+app.use(express.cookieParser());
+
+// - Init EJS view engine - //
+app.set("view engine", "ejs");
 
 // - FUNCTIONS - //
 function generateRandomString() {
@@ -50,6 +50,7 @@ app.get("/urls/:id", (req, res) => {
   };
   res.render("urls_show", templateVars);
 });
+// FIXME: str.indexOf('http' || 'https') wrapped in if()
 app.get("/u/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
   let dbEntry = urlDatabase[shortURL];
@@ -63,8 +64,6 @@ app.get("/u/:shortURL", (req, res) => {
 // - POSTS - //
 app.post("/urls", (req, res) => {
   let longURL = req.body.longURL;
-  // if longURL doesn't preface with http:// or https://
-  // longURL = `http://${longURL}`
   let randomStr = generateRandomString();
   urlDatabase[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
