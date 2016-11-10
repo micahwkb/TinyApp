@@ -1,17 +1,22 @@
 "use strict";
 
+// - Requires - //
 const express = require("express");
 const randomize = require("randomatic");
-const app = express();
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
+
+// - global vars - //
 const PORT = process.env.PORT || 8080;
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+const app = express();
 
 // - Engine inits - //
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use("/public", express.static("public"));
 app.use(express.cookieParser());
@@ -23,7 +28,7 @@ app.set("view engine", "ejs");
 function generateRandomString() {
   return randomize("Aa0", 6);
 }
-
+console.log(generateRandomString("*", 64))
 // - REDIRECTS - //
 app.get("/", (req, res) => {
   res.redirect("/urls");
