@@ -2,6 +2,8 @@
 
 // - Requires - //
 const express = require("express");
+const app = express();
+
 const randomize = require("randomatic");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -13,13 +15,11 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-const app = express();
 
 // - Engine inits - //
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use("/public", express.static("public"));
-app.use(express.cookieParser());
 
 // - Init EJS view engine - //
 app.set("view engine", "ejs");
