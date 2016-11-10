@@ -58,7 +58,7 @@ button, .shrinklink {
   font-size: .9em;
 }
 .auth-main {
-  margin: auto;
+  float: right;
 }
 .shrinklink {
   margin: auto;
@@ -98,4 +98,10 @@ button:hover, .shrinklink:hover {
 }
 .left-force {
   text-align: left;
+}
+.btnregister {
+  float: right;
+}
+.btnregister:hover {
+  background-color: #1E90FF;
 }
