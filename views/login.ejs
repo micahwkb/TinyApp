@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include partials/_head %>
+  </head>
+  <body>
+    <a href="/"><% include partials/_h1 %></a>
+    <div class = "formtemplate">
+      <form action="/login" method="POST">
+          <h4>... login and get shrinking!</h4>
+          <input class="text-field" type="text" name="username" autofocus="autofocus" placeholder="username/email"><br>
+          <input class="text-field" type="password" name="password" placeholder="password"><br>
+        <button class="btnbig btnauth" type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+</html>
