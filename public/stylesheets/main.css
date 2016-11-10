@@ -27,6 +27,7 @@ a:visited.links-nodec  {
 }
 
 button {
+  border: 1px solid gray;
   height: 30px;
   line-height: 30px;
   font-size: .9em;
@@ -37,14 +38,15 @@ input {
   height: 32px;
   font-size: 1.1em;
 }
-button:hover, .shrinklink:hover {
-  box-shadow: 1px 1px 1px gray;
-  color: white;
-  text-shadow: 1px 1px 1px gray;
-}
 button, .shrinklink {
   border: 1px solid gray;
   background-color: white;
+}
+button:hover, .shrinklink:hover {
+  border: 1px solid white;
+  box-shadow: 1px 1px 1px gray;
+  color: white;
+  text-shadow: 1px 1px 1px gray;
 }
 .internal-link {
   color: black;
@@ -81,11 +83,17 @@ button, .shrinklink {
   height: 40px;
   line-height: 40px;
 }
+.btncaution:hover, .btnsafe:hover {
+    border: 1px solid white;
+}
 .btncaution:hover {
   background-color: orangered;
 }
 .btnsafe:hover {
   background-color: #7CCD7C;
+}
+.btnlogin:hover {
+  background-color: #8470FF;
 }
 .left-force {
   text-align: left;

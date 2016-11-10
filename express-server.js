@@ -73,6 +73,13 @@ app.post("/urls", (req, res) => {
   urlDatabase[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
 });
+
+app.post("/login", (req, res) => {
+  let user = req.body.username;
+  res.cookie(user);
+  res.redirect("/");
+});
+
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL];
   res.redirect("/urls")
