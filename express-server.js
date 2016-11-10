@@ -29,7 +29,7 @@ function generateRandomString() {
   return randomize("Aa0", 6);
 }
 
-// - REDIRECTS - //
+// - GET REDIRECTS - //
 app.get("/", (req, res) => {
   res.redirect("/urls");
 });
@@ -40,7 +40,7 @@ app.get("/new", (req, res) => {
   res.redirect("/urls/new");
 });
 
-// - RENDERS - //
+// - GET RENDERS - //
 app.get("/urls", (req, res) => {
   let templateVars = {
     username: req.cookies["username"],
