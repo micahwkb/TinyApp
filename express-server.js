@@ -70,7 +70,7 @@ app.get("/", (req, res) => {
   }
 });
 app.get("/new", (req, res) => {
-  res.redirect("/urls/new", templateVars);
+  res.redirect("/urls/new");
 });
 
 // - GET RENDERS - //
