@@ -6,7 +6,7 @@
   <body>
     <% include partials/_header %>
     <div>
-      <% include partials/_h1 %>
+      <% include partials/_logo %>
       <a href="/urls/new">
         <div class="shrinklink">
         Click to shrink a URL
@@ -14,7 +14,6 @@
       </a>
       <br>
       <div class="masterlist">
-        <h3><em>Already shortened:</em></h3>
         <table>
           <% for (key in urls) { %>
             <tr>

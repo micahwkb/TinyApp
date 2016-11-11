@@ -8,20 +8,20 @@ const randomize = require("randomatic");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const _ = require("lodash");
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 // - global vars - //
 const PORT = process.env.PORT || 8080;
 const users = {
 // user 555555 for testing, to be rem'd
   555555: {
-        id: 555555,
-        email: "test@test.com",
-        password: "password",
-        urls: {
-          "b2xVn2": "http://www.lighthouselabs.ca"
-        }
-      }
+    id: 555555,
+    email: "test@test.com",
+    password: "password",
+    urls: {
+      "b2xVn2": "http://www.lighthouselabs.ca"
+    }
+  }
 };
 
 // - Engine inits - //
@@ -109,7 +109,7 @@ app.get("/urls/new", (req, res) => {
     let templateVars = {
         username: userId,
         email: findUserEmailById(userId, users),
-        urls: urlDatabase
+        urls: users[userId].urls
       };
     res.render("urls_new", templateVars);
   } else {
@@ -129,8 +129,8 @@ app.get("/uname-error", (req, res) => {
 app.get("/register/invalid", (req, res) => {
   res.render("register-invalid");
 });
-app.get("/password-error", (req, res) => {
-  res.render("password-error");
+app.get("/password_error", (req, res) => {
+  res.render("password_error");
 });
 app.get("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
@@ -168,7 +168,7 @@ app.post("/urls", (req, res) => {
   let userId = req.cookies.username;
   let longURL = req.body.longURL;
   let randomStr = generateRandomString();
-  users.userId.urls[randomStr] = longURL;
+  users[userId].urls[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
 });
 
@@ -181,7 +181,7 @@ app.post("/login", (req, res) => {
   } else if (passwordMatch(id, password, users) === true) {
     res.cookie("username", id);
     res.redirect("/urls");
-  } else res.redirect("/password-error");
+  } else res.redirect("/password_error");
 });
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
@@ -190,6 +190,7 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
+  let hashed_password = bcrypt.hashSync(password, 10)
   switch(true) {
     case (req.cookies.username):
       res.redirect("/urls");
@@ -205,7 +206,7 @@ app.post("/register", (req, res) => {
       users[id] = {
         id: id,
         email: email,
-        password: req.body.password,
+        password: password,
         urls: {}
       };
       res.cookie("username", id);
@@ -224,7 +225,7 @@ app.post("/urls/:id", (req, res) => {
   let userId = req.cookies.username;
   let url = req.params.id;
   users[userId].urls[url] = req.body.longURL;
-  res.redirect(`/urls/${id}`);
+  res.redirect(`/urls/${url}`);
 });
 
 // - SERVER LISTENER - //
