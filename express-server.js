@@ -16,12 +16,12 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-const users = {
+const users = {/*
   555: {
       id: 555,
       email: "test@test.com",
       password: "password"
-    }
+    }*/
 };
 
 // - Engine inits - //
@@ -36,7 +36,9 @@ app.set("view engine", "ejs");
 const generateRandomString = () => {
   return randomize("Aa0", 6);
 };
-
+const passwordMatch = (id, password, object) => {
+  return (object[id].password === password);
+};
 const doesEmailExist = (email, object) => {
   let found = [];
   _.forEach(object, function(userId) {
@@ -46,7 +48,6 @@ const doesEmailExist = (email, object) => {
   })
   return (found.length > 0);
 };
-
 const findUserIdByEmail = (email, object) => {
   let id = "";
   _.forEach(object, function(user) {
@@ -56,7 +57,6 @@ const findUserIdByEmail = (email, object) => {
   })
   return id;
 };
-
 const findUserEmailById = (id, object) => {
   return object[id].email;
 };
@@ -69,9 +69,6 @@ app.get("/", (req, res) => {
     res.redirect("/login");
   }
 });
-// app.get("/hello", (req, res) => {
-//   res.end("<html><body>Hello <b>World</b></body></html>\n");
-// });
 app.get("/new", (req, res) => {
   res.redirect("/urls/new");
 });
@@ -106,9 +103,13 @@ app.get("/register", (req, res) => {
 app.get("/register/error", (req, res) => {
   res.render("register-error");
 });
-app.get("/login-error", (req, res) => {
-  res.render("login-error");
+app.get("/uname-error", (req, res) => {
+  res.render("uname-error");
 });
+app.get("/password-error", (req, res) => {
+  res.render("password-error");
+});
+
 app.get("/urls/:id", (req, res) => {
   if (req.cookies["username"]) {
     if (urlDatabase[req.params.id] !== undefined) {
@@ -121,8 +122,6 @@ app.get("/urls/:id", (req, res) => {
     } else {
       res.redirect("/");
     }
-  } else {
-    res.redirect("/login");
   }
 });
 // FIXME: str.indexOf('http' || 'https') wrapped in if()
@@ -147,19 +146,19 @@ app.post("/urls", (req, res) => {
 app.post("/login", (req, res) => {
   let username = req.body["username"];
   let id = findUserIdByEmail(username, users);
+  let password = req.body.password;
   if (doesEmailExist(username, users) === false) {
-    res.redirect("/login-error");
-  } else {
+    res.redirect("/uname-error");
+  } else if (passwordMatch(id, password, users) === true) {
     res.cookie("username", id);
     res.redirect("/urls");
-  }
+  } else res.redirect("/password-error")
 });
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
   res.redirect("/");
 });
 app.post("/register", (req, res) => {
-  let password = req.body.password;
   let email = req.body.email;
   if (req.cookies["username"]) {
     res.redirect("/urls");
@@ -173,7 +172,7 @@ app.post("/register", (req, res) => {
       password: password
     };
     res.cookie("username", id);
-    res.redirect("/urls");
+    res.redirect("/");
   }
   res.redirect("/");
 });
