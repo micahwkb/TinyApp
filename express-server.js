@@ -17,11 +17,11 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 const users = {
-   1: {
-    id: 1,
-    email: "test@test.com",
-    password: "password"
-  }
+  555: {
+      id: 555,
+      email: "test@test.com",
+      password: "password"
+    }
 };
 
 // - Engine inits - //
@@ -41,12 +41,25 @@ const doesEmailExist = (email, object) => {
   let found = [];
   _.forEach(object, function(userId) {
     if (userId.email === email) {
-      console.log(userId.email, "is ")
       found.push(userId.email);
     }
   })
   return (found.length > 0);
 };
+
+const findUserIdByEmail = (email, object) => {
+  let id = "";
+  _.forEach(object, function(user) {
+    if (user.email === email) {
+      id = user.id;
+    }
+  })
+  return id;
+};
+
+const findUserEmailById = (id, object) => {
+  return object[id].email;
+}
 
 // - GET REDIRECTS - //
 app.get("/", (req, res) => {
@@ -90,6 +103,9 @@ app.get("/urls/new", (req, res) => {
 app.get("/register", (req, res) => {
   res.render("register");
 });
+app.get("/register/error", (req, res) => {
+  res.render("register-error");
+});
 
 app.get("/urls/:id", (req, res) => {
   if (req.cookies["username"]) {
@@ -97,7 +113,7 @@ app.get("/urls/:id", (req, res) => {
       let templateVars = {
         shortURL: req.params.id,
         longURL: urlDatabase[req.params.id],
-        username: req.cookies["username"]
+        username: res.cookie["username"]
       };
       res.render("urls_show", templateVars);
     } else {
@@ -127,7 +143,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("username", req.body["username"]);
+  res.cookie("username", findUserIdByEmail(req.body.username));
   res.redirect("/urls");
 });
 app.post("/logout", (req, res) => {
@@ -137,12 +153,20 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   let password = req.body.password;
   let email = req.body.email;
-  let id = generateRandomString();
-  users[id] = {
-    id: id,
-    email: email,
-    password: password
-  };
+  if (req.cookies["username"]) {
+    res.redirect("/urls");
+  } else if (doesEmailExist(email, users) === true) {
+    res.redirect("register/error");
+  } else {
+    let id = generateRandomString();
+    users[id] = {
+      id: id,
+      email: email,
+      password: password
+    };
+    res.cookie("username", id);
+    res.redirect("/urls");
+  }
   res.redirect("/");
 });
 app.post("/urls/:shortURL/delete", (req, res) => {

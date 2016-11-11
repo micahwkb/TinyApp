@@ -4,13 +4,15 @@ body {
   background: no-repeat center/100% url("../shrunk.jpg");
   font-family: Helvetica;
 }
-
 h1 {
   font-family: Arial;
   color: white;
   text-shadow: 3px 0px 2px black;
   line-height: .2em;
   color: crimson;
+}
+h4 {
+  text-align: center;
 }
 a:visited, a:link, a:active h1, h3, .internal-link
 {
@@ -23,7 +25,6 @@ a:visited.links-nodec  {
   text-decoration: none;
   color: blue;
 }
-
 button {
   border: 1px solid gray;
   height: 30px;
