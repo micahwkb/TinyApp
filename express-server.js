@@ -63,6 +63,9 @@ const findUserIdByEmail = (email, object) => {
 const findUserEmailById = (id, object) => {
   return object[id].email;
 };
+const checkForUrlByUser = (id, shortURL, object) => {
+  return Object.keys(object[id].urls).indexOf(shortURL) > -1;
+}
 
 // - GET REDIRECTS - //
 app.get("/", (req, res) => {
@@ -124,8 +127,9 @@ app.get("/password-error", (req, res) => {
   res.render("password-error");
 });
 app.get("/urls/:id", (req, res) => {
+  let shortURL = req.params.id;
   let userId = req.cookies.username;
-  if (userId) {
+  if (userId && checkForUrlByUser(userId, shortURL, users)) {
     let templateVars = {
       username: userId,
       email: findUserEmailById(userId, users),
@@ -135,13 +139,15 @@ app.get("/urls/:id", (req, res) => {
     };
     res.render("urls_show", templateVars);
   } else {
-    res.redirect("/");
+    res.render("not_users_url");
   }
 });
 // FIXME: str.indexOf('http' || 'https') wrapped in if()
 app.get("/u/:shortURL", (req, res) => {
+  let username = req.cookies.username;
   let shortURL = req.params.shortURL;
   let longURL = urlDatabase[shortURL];
+  // if ()
   if (longURL !== undefined) {
     res.redirect(longURL);
   } else {
