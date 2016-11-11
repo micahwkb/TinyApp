@@ -63,7 +63,7 @@ const findUserEmailById = (id, object) => {
 
 // - GET REDIRECTS - //
 app.get("/", (req, res) => {
-  if (req.cookies["username"]) {
+  if (req.cookies.username) {
     res.redirect("/urls");
   } else {
     res.redirect("/login");
@@ -79,7 +79,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let userId = req.cookies["username"];
+  let userId = req.cookies.username;
   if (userId) {
     let templateVars = {
         username: userId,
@@ -93,7 +93,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  let userId = req.cookies["username"];
+  let userId = req.cookies.username;
   if (userId) {
     let templateVars = {
         username: userId,
@@ -122,7 +122,7 @@ app.get("/password-error", (req, res) => {
   res.render("password-error");
 });
 app.get("/urls/:id", (req, res) => {
-  let userId = req.cookies["username"];
+  let userId = req.cookies.username;
   if (userId) {
     let templateVars = {
       username: userId,
@@ -156,7 +156,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  let username = req.body["username"];
+  let username = req.body.username;
   let id = findUserIdByEmail(username, users);
   let password = req.body.password;
   if (doesEmailExist(username, users) === false) {
@@ -174,7 +174,7 @@ app.post("/register", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
   switch(true) {
-    case (req.cookies["username"]):
+    case (req.cookies.username):
       res.redirect("/urls");
       break;
     case (email.length < 6 || password.length < 8):
