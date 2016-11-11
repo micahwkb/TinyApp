@@ -133,42 +133,47 @@ app.get("/urls/:id", (req, res) => {
     let templateVars = {
       username: userId,
       email: findUserEmailById(userId, users),
-      urls: urlDatabase,
+      urls: users[userId].urls,
       shortURL: req.params.id,
-      longURL: urlDatabase[req.params.id]
+      longURL: users[userId].urls[req.params.id]
     };
     res.render("urls_show", templateVars);
   } else {
     res.render("not_users_url");
   }
 });
-// FIXME: str.indexOf('http' || 'https') wrapped in if()
+// FIXME: broken for non-logins
 app.get("/u/:shortURL", (req, res) => {
-  let username = req.cookies.username;
+  let id = req.cookies.username;
   let shortURL = req.params.shortURL;
-  let longURL = urlDatabase[shortURL];
-  // if ()
-  if (longURL !== undefined) {
-    res.redirect(longURL);
-  } else {
-    res.redirect("/urls");
+  let longURL = users[id].urls[shortURL];
+  switch(true) {
+    case (longURL === undefined):
+      res.redirect("/urls");
+      break;
+    case (longURL.indexOf("http") === -1):
+      longURL = "http://" + longURL;
+    default:
+      res.redirect(longURL);
+  console.log(`THIS IS THE LONGURL: ${longURL}`)
+      break;
   }
 });
 
 // - POSTS - //
 app.post("/urls", (req, res) => {
-  let username = req.cookies.username;
+  let userId = req.cookies.username;
   let longURL = req.body.longURL;
   let randomStr = generateRandomString();
-  users.username[randomStr] = longURL;
+  users.userId.urls[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
 });
 
 app.post("/login", (req, res) => {
-  let username = req.body.username;
-  let id = findUserIdByEmail(username, users);
+  let userId = req.body.username;
+  let id = findUserIdByEmail(userId, users);
   let password = req.body.password;
-  if (doesEmailExist(username, users) === false) {
+  if (doesEmailExist(userId, users) === false) {
     res.redirect("/uname-error");
   } else if (passwordMatch(id, password, users) === true) {
     res.cookie("username", id);
@@ -206,12 +211,16 @@ app.post("/register", (req, res) => {
   }
 });
 app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL];
+  let userId = req.cookies.username;
+  let shortURL = req.params.shortURL;
+  // if (userId && checkForUrlByUser(userId, shortURL, users))
+  delete users[userId].urls[shortURL];
   res.redirect("/urls");
 });
 app.post("/urls/:id", (req, res) => {
-  let id = req.params.id;
-  urlDatabase[id] = req.body.longURL;
+  let userId = req.cookies.username;
+  let url = req.params.id;
+  users[userId].urls[url] = req.body.longURL;
   res.redirect(`/urls/${id}`);
 });
 
