@@ -65,7 +65,16 @@ const findUserEmailById = (id, object) => {
 };
 const checkForUrlByUser = (id, shortURL, object) => {
   return Object.keys(object[id].urls).indexOf(shortURL) > -1;
-}
+};
+const findLongUrlGlobal = (shortURL, object) => {
+  let longURL = "";
+  _.forEach(object, function(key) {
+    if (key.urls.hasOwnProperty(shortURL)) {
+      longURL = key.urls[shortURL]
+    }
+  });
+  return longURL;
+};
 
 // - GET REDIRECTS - //
 app.get("/", (req, res) => {
@@ -142,20 +151,17 @@ app.get("/urls/:id", (req, res) => {
     res.render("not_users_url");
   }
 });
-// FIXME: broken for non-logins
 app.get("/u/:shortURL", (req, res) => {
-  let id = req.cookies.username;
   let shortURL = req.params.shortURL;
-  let longURL = users[id].urls[shortURL];
+  let longURL = findLongUrlGlobal(shortURL, users);
   switch(true) {
     case (longURL === undefined):
-      res.redirect("/urls");
+      res.redirect("/");
       break;
     case (longURL.indexOf("http") === -1):
       longURL = "http://" + longURL;
     default:
       res.redirect(longURL);
-  console.log(`THIS IS THE LONGURL: ${longURL}`)
       break;
   }
 });
