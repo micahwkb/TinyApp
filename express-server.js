@@ -109,7 +109,6 @@ app.get("/uname-error", (req, res) => {
 app.get("/password-error", (req, res) => {
   res.render("password-error");
 });
-
 app.get("/urls/:id", (req, res) => {
   if (req.cookies["username"]) {
     if (urlDatabase[req.params.id] !== undefined) {
@@ -169,7 +168,7 @@ app.post("/register", (req, res) => {
     users[id] = {
       id: id,
       email: email,
-      password: password
+      password: req.body.password
     };
     res.cookie("username", id);
     res.redirect("/");
