@@ -59,7 +59,7 @@ const findUserIdByEmail = (email, object) => {
 
 const findUserEmailById = (id, object) => {
   return object[id].email;
-}
+};
 
 // - GET REDIRECTS - //
 app.get("/", (req, res) => {
@@ -106,7 +106,9 @@ app.get("/register", (req, res) => {
 app.get("/register/error", (req, res) => {
   res.render("register-error");
 });
-
+app.get("/login-error", (req, res) => {
+  res.render("login-error");
+});
 app.get("/urls/:id", (req, res) => {
   if (req.cookies["username"]) {
     if (urlDatabase[req.params.id] !== undefined) {
@@ -143,8 +145,14 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("username", findUserIdByEmail(req.body.username));
-  res.redirect("/urls");
+  let username = req.body["username"];
+  let id = findUserIdByEmail(username, users);
+  if (doesEmailExist(username, users) === false) {
+    res.redirect("/login-error");
+  } else {
+    res.cookie("username", id);
+    res.redirect("/urls");
+  }
 });
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
