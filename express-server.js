@@ -20,7 +20,10 @@ const users = {
   555555: {
         id: 555555,
         email: "test@test.com",
-        password: "password"
+        password: "password",
+        urls: {
+          "b2xVn2": "http://www.lighthouselabs.ca"
+        }
       }
 };
 
@@ -84,14 +87,13 @@ app.get("/urls", (req, res) => {
     let templateVars = {
         username: userId,
         email: findUserEmailById(userId, users),
-        urls: urlDatabase
+        urls: users[userId].urls
       };
     res.render("urls_index", templateVars);
   } else {
     res.redirect("/login");
   }
 });
-
 app.get("/urls/new", (req, res) => {
   let userId = req.cookies.username;
   if (userId) {
@@ -149,9 +151,10 @@ app.get("/u/:shortURL", (req, res) => {
 
 // - POSTS - //
 app.post("/urls", (req, res) => {
+  let username = req.cookies.username;
   let longURL = req.body.longURL;
   let randomStr = generateRandomString();
-  urlDatabase[randomStr] = longURL;
+  users.username[randomStr] = longURL;
   res.redirect(`/urls/${randomStr}`);
 });
 
@@ -188,7 +191,8 @@ app.post("/register", (req, res) => {
       users[id] = {
         id: id,
         email: email,
-        password: req.body.password
+        password: req.body.password,
+        urls: {}
       };
       res.cookie("username", id);
       res.redirect("/");
