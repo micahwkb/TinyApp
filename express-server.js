@@ -12,11 +12,8 @@ const _ = require("lodash");
 
 // - global vars - //
 const PORT = process.env.PORT || 8080;
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
-};
 const users = {
+// user 555555 for testing, to be rem'd
   555555: {
         id: 555555,
         email: "test@test.com",
