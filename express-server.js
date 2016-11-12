@@ -13,6 +13,7 @@ const users = {
 555555: {
   id: 555555,
   email: "test@test.com",
+  // password is "password"
   password: "$2a$10$0OIWqQZZeYmYAdzkIJBZzelckJcGT69aQqWdPmAAEQ8FIE0ShZG7G",
   urls: {
     "b2xVn2": "http://www.lighthouselabs.ca"
