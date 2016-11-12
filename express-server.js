@@ -155,7 +155,7 @@ app.get("/u/:shortURL", (req, res) => {
   }
 });
 app.get("/urls/:id/delete", (req, res) => {
-  res.redirect("https://www.amazon.ca/Hacking-Dummies-Kevin-Beaver/dp/1118380932");
+  res.redirect("http://amzn.to/2f1yVsy");
 });
 // - POSTS - //
 app.post("/urls", (req, res) => {
@@ -211,8 +211,12 @@ app.post("/register", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   let userId = req.session.user_id;
   let shortURL = req.params.shortURL;
-  delete users[userId].urls[shortURL];
-  res.redirect("/urls");
+  if (checkForUrlByUser(userId, shortURL, users)) {
+    delete users[userId].urls[shortURL];
+    res.redirect("/urls");
+  } else {
+    res.redirect("/");
+  }
 });
 app.post("/urls/:id", (req, res) => {
   let userId = req.session.user_id;
