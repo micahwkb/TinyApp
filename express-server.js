@@ -121,13 +121,13 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 app.get("/register/error", (req, res) => {
-  res.render("register-uname-used");
+  res.render("register_uname_used");
 });
-app.get("/uname-error", (req, res) => {
-  res.render("uname-error");
+app.get("/uname_error", (req, res) => {
+  res.render("uname_error");
 });
 app.get("/register/invalid", (req, res) => {
-  res.render("register-invalid");
+  res.render("register_invalid");
 });
 app.get("/password_error", (req, res) => {
   res.render("password_error");
@@ -145,7 +145,7 @@ app.get("/urls/:id", (req, res) => {
     };
     res.render("urls_show", templateVars);
   } else {
-    res.render("not_users_url");
+    res.render("urls_show_error");
   }
 });
 app.get("/u/:shortURL", (req, res) => {
@@ -177,7 +177,7 @@ app.post("/login", (req, res) => {
   let id = findUserIdByEmail(userId, users);
   let password = req.body.password;
   if (doesEmailExist(userId, users) === false) {
-    res.redirect("/uname-error");
+    res.redirect("/uname_error");
   } else if (passwordMatch(id, password, users) === true) {
     req.session.user_id = id;
     res.redirect("/urls");

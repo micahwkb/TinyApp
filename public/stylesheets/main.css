@@ -15,7 +15,7 @@ h2, h3, h4 {
   text-align: center;
 }
 h5 {
-  float: left;
+  text-align: left;
 }
 a:visited, a:link, a:active h1, h3, .internal-link
 {
@@ -63,7 +63,10 @@ button, .shrinklink {
   font-size: .9em;
 }
 .auth-main {
+  line-height: 1px;
   float: right;
+  text-align: right;
+  padding: 10px;
 }
 .shrinklink {
   margin: auto;
