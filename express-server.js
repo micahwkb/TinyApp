@@ -1,17 +1,12 @@
 "use strict";
 
-// - Requires - //
 const express = require("express");
 const app = express();
-
 const randomize = require("randomatic");
-// const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
-
-// - global vars - //
 const PORT = process.env.PORT || 8080;
 const users = {
 // user 555555 for testing
