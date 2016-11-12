@@ -56,9 +56,6 @@ const findUserIdByEmail = (email, object) => {
   });
   return id;
 };
-const findUserEmailById = (id, object) => {
-  return object[id].email;
-};
 const checkForUrlByUser = (id, shortURL, object) => {
   return Object.keys(object[id].urls).indexOf(shortURL) > -1;
 };
@@ -91,7 +88,7 @@ app.get("/urls", (req, res) => {
   if (userId) {
     let templateVars = {
       username: userId,
-      email: findUserEmailById(userId, users),
+      email: users[userId].email,
       urls: users[userId].urls
     };
     res.render("urls_index", templateVars);
@@ -104,7 +101,7 @@ app.get("/urls/new", (req, res) => {
   if (userId) {
     let templateVars = {
       username: userId,
-      email: findUserEmailById(userId, users),
+      email: users[userId].email,
       urls: users[userId].urls
     };
     res.render("urls_new", templateVars);
@@ -133,7 +130,7 @@ app.get("/urls/:id", (req, res) => {
   if (userId && checkForUrlByUser(userId, shortURL, users)) {
     let templateVars = {
       username: userId,
-      email: findUserEmailById(userId, users),
+      email: users[userId].email,
       urls: users[userId].urls,
       shortURL: req.params.id,
       longURL: users[userId].urls[req.params.id]
@@ -212,8 +209,12 @@ app.post("/register", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   let userId = req.session.user_id;
   let shortURL = req.params.shortURL;
-  delete users[userId].urls[shortURL];
-  res.redirect("/urls");
+  if (checkForUrlByUser(userId, shortURL, users) === false) {
+    res.redirect("/");
+  } else {
+    delete users[userId].urls[shortURL];
+    res.redirect("/urls");
+  }
 });
 app.post("/urls/:id", (req, res) => {
   let userId = req.session.user_id;
