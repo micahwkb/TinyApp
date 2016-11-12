@@ -154,7 +154,9 @@ app.get("/u/:shortURL", (req, res) => {
       break;
   }
 });
-
+app.get("/urls/:id/delete", (req, res) => {
+  res.redirect("https://www.amazon.ca/Hacking-Dummies-Kevin-Beaver/dp/1118380932");
+});
 // - POSTS - //
 app.post("/urls", (req, res) => {
   let userId = req.session.user_id;
