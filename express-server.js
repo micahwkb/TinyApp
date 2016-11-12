@@ -76,8 +76,7 @@ const findLongUrlGlobal = (shortURL, object) => {
   return longURL;
 };
 
-// - GET renders/redirects - //
-
+// - GETs - //
 app.get("/", (req, res) => {
   if (req.session.user_id) {
     res.redirect("/urls");
@@ -217,7 +216,6 @@ app.post("/register", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   let userId = req.session.user_id;
   let shortURL = req.params.shortURL;
-  // if (userId && checkForUrlByUser(userId, shortURL, users))
   delete users[userId].urls[shortURL];
   res.redirect("/urls");
 });
