@@ -17,13 +17,12 @@ const users = {
   555555: {
     id: 555555,
     email: "test@test.com",
-    password: "password",
+    password: "$2a$10$0OIWqQZZeYmYAdzkIJBZzelckJcGT69aQqWdPmAAEQ8FIE0ShZG7G",
     urls: {
       "b2xVn2": "http://www.lighthouselabs.ca"
     }
   }
 };
-
 // - Engine inits - //
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -37,8 +36,9 @@ const generateRandomString = () => {
   return randomize("Aa0", 6);
 };
 const passwordMatch = (id, password, object) => {
-  return (object[id].password === password);
+  return bcrypt.compareSync(password, object[id].password);
 };
+
 const doesEmailExist = (email, object) => {
   let found = [];
   _.forEach(object, function(userId) {
@@ -190,7 +190,7 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
-  let hashed_password = bcrypt.hashSync(password, 10)
+  let hashed_password = bcrypt.hashSync(password, 10);
   switch(true) {
     case (req.cookies.username):
       res.redirect("/urls");
@@ -206,7 +206,7 @@ app.post("/register", (req, res) => {
       users[id] = {
         id: id,
         email: email,
-        password: password,
+        password: hashed_password,
         urls: {}
       };
       res.cookie("username", id);
