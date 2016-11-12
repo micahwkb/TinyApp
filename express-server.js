@@ -209,12 +209,8 @@ app.post("/register", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   let userId = req.session.user_id;
   let shortURL = req.params.shortURL;
-  if (checkForUrlByUser(userId, shortURL, users) === false) {
-    res.redirect("/");
-  } else {
-    delete users[userId].urls[shortURL];
-    res.redirect("/urls");
-  }
+  delete users[userId].urls[shortURL];
+  res.redirect("/urls");
 });
 app.post("/urls/:id", (req, res) => {
   let userId = req.session.user_id;
