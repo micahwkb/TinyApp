@@ -209,8 +209,10 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   let shortURL = req.params.shortURL;
   if (checkForUrlByUser(userId, shortURL, users)) {
     delete users[userId].urls[shortURL];
+    res.status(200);
     res.redirect("/urls");
   } else {
+    res.status(403);
     res.redirect("/");
   }
 });
