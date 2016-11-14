@@ -45,7 +45,27 @@ const requireUser = (req, res, cb) => {
     res.render("auth_required");
   }
 };
-
+const validateRegistration = (req, res, email, pwd, object) => {
+  if (email.length < 6 || pwd.length < 8) {
+    res.status(400);
+    res.render("register_invalid");
+  } else if (doesEmailExist(email, users)) {
+    res.status(403);
+    res.render("register_uname_used");
+  } else {
+    let hashed_password = bcrypt.hashSync(pwd, 10);
+    let id = generateRandomString();
+      object[id] = {
+        id: id,
+        email: email,
+        password: hashed_password,
+        urls: {}
+      };
+      req.session.user_id = id;
+      res.status(200);
+      res.redirect("/urls");
+  }
+};
 const generateRandomString = () => {
   return randomize("Aa0", 6);
 };
@@ -83,6 +103,15 @@ const findLongUrlGlobal = (shortURL, object) => {
   });
   return longURL;
 };
+const longUrlChecker = (res, longURL) => {
+  if (longURL === undefined) {
+    res.status(404);
+    return res.render("unknown_url");
+  } else if (longURL.indexOf("http") === -1) {
+    longURL = "http://" + longURL;
+  }
+  res.redirect(longURL);
+};
 
 // - GETs - //
 app.get("/", (req, res) => {
@@ -115,21 +144,9 @@ app.get("/register", (req, res) => {
   res.status(200);
   res.render("register");
 });
-app.get("/register/error", (req, res) => {
-  res.status(403);
-  res.render("register_uname_used");
-});
-app.get("/uname_error", (req, res) => {
-  res.status(401);
-  res.render("uname_error");
-});
 app.get("/password_error", (req, res) => {
   res.status(401);
   res.render("password_error");
-});
-app.get("/register/invalid", (req, res) => {
-  res.status(400);
-  res.render("register_invalid");
 });
 app.get("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
@@ -147,16 +164,7 @@ app.get("/urls/:id", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
   let longURL = findLongUrlGlobal(shortURL, users);
-  switch(true) {
-    case (longURL === undefined):
-      res.redirect("/");
-      break;
-    case (longURL.indexOf("http") === -1):
-      longURL = "http://" + longURL;
-    default:
-      res.redirect(longURL);
-      break;
-  }
+  longUrlChecker(res, longURL);
 });
 app.get("/urls/:id/delete", (req, res) => {
   res.redirect("http://amzn.to/2f1yVsy");
@@ -175,42 +183,26 @@ app.post("/login", (req, res) => {
   let id = findUserIdByEmail(email, users);
   let password = req.body.password;
   if (!doesEmailExist(email, users)) {
-    res.redirect("/uname_error");
+    res.status(403);
+    res.render("uname_invalid");
   } else if (passwordMatch(id, password, users)) {
     req.session.user_id = id;
+    res.status(200);
     res.redirect("/urls");
-  } else res.redirect("/password_error");
+  } else {
+    res.status(401);
+    res.redirect("/password_error");
+  }
 });
 app.post("/logout", (req, res) => {
   req.session = null;
   res.redirect("/");
 });
+
 app.post("/register", (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
-  let hashed_password = bcrypt.hashSync(password, 10);
-  switch(true) {
-    case (req.session.user_id):
-      res.redirect("/urls");
-      break;
-    case (email.length < 6 || password.length < 8):
-      res.redirect("/register/invalid");
-      break;
-    case (doesEmailExist(email, users) === true):
-      res.redirect("register/error");
-      break;
-    default:
-      let id = generateRandomString();
-      users[id] = {
-        id: id,
-        email: email,
-        password: hashed_password,
-        urls: {}
-      };
-      req.session.user_id = id;
-      res.redirect("/");
-      break;
-  }
+  validateRegistration(req, res, email, password, users);
 });
 app.post("/urls/:shortURL/delete", (req, res) => {
   let userId = req.session.user_id;
