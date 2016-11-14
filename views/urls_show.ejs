@@ -10,10 +10,10 @@
       <h2>Shrunken! →
         <a class="links-nodec" href="http://localhost:8080/u/<%= shortURL %>"> http://localhost:8080/u/<%= shortURL %></a>
       </h2>
-      <h4>Full URL: <%= longURL %></h4>
+      <h4>Full URL: <%= `${urls[shortURL]}` %></h4>
       <div>
         <form method="POST" action="/urls/<%= `${shortURL}` %>">
-          <input class="text-field" autofocus="autofocus" autocomplete="off" id="longURL" type="text" name="longURL" value="<%= `${longURL}` %>">
+          <input class="text-field" autofocus="autofocus" autocomplete="off" id="longURL" type="text" name="longURL" value="<%= `${urls[shortURL]}` %>">
           <button class="btnsafe btnbig" type="submit">🔗 Update Link</button>
         </form>
       </div>

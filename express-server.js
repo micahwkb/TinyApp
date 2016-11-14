@@ -31,6 +31,21 @@ app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
 
 // - FUNCTIONS - //
+const requireUser = (req, res, cb) => {
+  let userId = req.session.user_id;
+  if (userId) {
+    let templateVars = {
+      username: userId,
+      email: users[userId].email,
+      urls: users[userId].urls
+    };
+    cb(templateVars);
+  } else {
+    res.status(401);
+    res.render("auth_required");
+  }
+};
+
 const generateRandomString = () => {
   return randomize("Aa0", 6);
 };
@@ -38,18 +53,18 @@ const passwordMatch = (id, password, object) => {
   return bcrypt.compareSync(password, object[id].password);
 };
 
-const doesEmailExist = (email, object) => {
+const doesEmailExist = (email, userDatabase) => {
   let found = [];
-  _.forEach(object, function(userId) {
+  _.forEach(userDatabase, (userId) => {
     if (userId.email === email) {
       found.push(userId.email);
     }
   });
   return (found.length > 0);
 };
-const findUserIdByEmail = (email, object) => {
-  let id = "";
-  _.forEach(object, function(user) {
+const findUserIdByEmail = (email, userDatabase) => {
+  let id;
+  _.forEach(userDatabase, (user) => {
     if (user.email === email) {
       id = user.id;
     }
@@ -60,8 +75,8 @@ const checkForUrlByUser = (id, shortURL, object) => {
   return Object.keys(object[id].urls).indexOf(shortURL) > -1;
 };
 const findLongUrlGlobal = (shortURL, object) => {
-  let longURL = "";
-  _.forEach(object, function(key) {
+  let longURL;
+  _.forEach(object, (key) => {
     if (key.urls.hasOwnProperty(shortURL)) {
       longURL = key.urls[shortURL];
     }
@@ -81,64 +96,53 @@ app.get("/new", (req, res) => {
   res.redirect("/urls/new");
 });
 app.get("/login", (req, res) => {
+  res.status(200);
   res.render("login");
 });
 app.get("/urls", (req, res) => {
-  let userId = req.session.user_id;
-  if (userId) {
-    let templateVars = {
-      username: userId,
-      email: users[userId].email,
-      urls: users[userId].urls
-    };
+  requireUser(req, res, (templateVars) => {
+    res.status(200);
     res.render("urls_index", templateVars);
-  } else {
-    res.redirect("/login");
-  }
+  });
 });
 app.get("/urls/new", (req, res) => {
-  let userId = req.session.user_id;
-  if (userId) {
-    let templateVars = {
-      username: userId,
-      email: users[userId].email,
-      urls: users[userId].urls
-    };
+  requireUser(req, res, (templateVars) => {
+    res.status(200);
     res.render("urls_new", templateVars);
-  } else {
-    res.redirect("/login");
-  }
+  });
 });
 app.get("/register", (req, res) => {
+  res.status(200);
   res.render("register");
 });
 app.get("/register/error", (req, res) => {
+  res.status(403);
   res.render("register_uname_used");
 });
 app.get("/uname_error", (req, res) => {
+  res.status(401);
   res.render("uname_error");
 });
-app.get("/register/invalid", (req, res) => {
-  res.render("register_invalid");
-});
 app.get("/password_error", (req, res) => {
+  res.status(401);
   res.render("password_error");
+});
+app.get("/register/invalid", (req, res) => {
+  res.status(400);
+  res.render("register_invalid");
 });
 app.get("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
-  let userId = req.session.user_id;
-  if (userId && checkForUrlByUser(userId, shortURL, users)) {
-    let templateVars = {
-      username: userId,
-      email: users[userId].email,
-      urls: users[userId].urls,
-      shortURL: req.params.id,
-      longURL: users[userId].urls[req.params.id]
-    };
-    res.render("urls_show", templateVars);
-  } else {
-    res.render("urls_show_error");
-  }
+  requireUser(req, res, (templateVars) => {
+    templateVars.shortURL = shortURL;
+    if (checkForUrlByUser(templateVars.username, shortURL, users)) {
+      res.status(200);
+      res.render("urls_show", templateVars);
+    } else {
+      res.status(401);
+      res.render("urls_show_error");
+    }
+  });
 });
 app.get("/u/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL;
@@ -167,12 +171,12 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  let userId = req.body.username;
-  let id = findUserIdByEmail(userId, users);
+  let email = req.body.username;
+  let id = findUserIdByEmail(email, users);
   let password = req.body.password;
-  if (doesEmailExist(userId, users) === false) {
+  if (!doesEmailExist(email, users)) {
     res.redirect("/uname_error");
-  } else if (passwordMatch(id, password, users) === true) {
+  } else if (passwordMatch(id, password, users)) {
     req.session.user_id = id;
     res.redirect("/urls");
   } else res.redirect("/password_error");
